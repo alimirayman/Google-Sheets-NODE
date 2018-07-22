@@ -10,11 +10,11 @@ const getjwt = (userEmail = "") => {
     null,
     key.private_key,
     ["https://www.googleapis.com/auth/spreadsheets"],
-    userEmail
+    userEmail || config.user.email
   );
 };
 
-async function main(userEmail = config.user.email) {
+async function main(userEmail = "") {
   const jwt = getjwt(userEmail);
   await jwt.authorize();
   google.options({ auth: jwt });
@@ -31,11 +31,6 @@ const ensureData = data => (data ? data : " ");
 
 const createSheet = async (title = "Test") => {
   const sheets = google.sheets({ version: "v4" });
-  // const request = {
-  //   properties: {
-  //     title
-  //   }
-  // };
   const { data } = await sheets.spreadsheets.create({});
   return data;
 };
@@ -77,69 +72,6 @@ const getAll = async (range = "Sheet1!A4:B7", id = "") => {
     range
   };
   const { data } = await sheets.spreadsheets.values.get(request);
-  return data;
-};
-
-const appendAllSubmission = async (user = {}) => {
-  const sheets = google.sheets({ version: "v4" });
-  const id = "=INDIRECT(ADDRESS(ROW()-1,COLUMN())) + 1";
-  const fullName = `${user.name} ${user.lname}`;
-  const curr = new Date();
-  const date = `${curr.getDate()}-${curr.getMonth() + 1}-${curr.getFullYear()}`;
-  const time = `${curr.getHours()}:${curr.getMinutes()}`;
-  const values = [
-    [
-      id,
-      ensureData(fullName),
-      ensureData(user.pplan),
-      ensureData(user.email),
-      ensureData(user.subject),
-      ensureData(user.eh),
-      ensureData(user.phone),
-      ensureData(user.message),
-      ensureData(user.gclid_field),
-      date,
-      time
-    ]
-  ];
-
-  const { data } = await sheets.spreadsheets.values.append({
-    // The ID of the spreadsheet to update.
-    spreadsheetId: config.sheet.submission,
-    // Values will be appended after the last row of the table.
-    range: "A:K",
-    // How the input data should be interpreted.
-    valueInputOption: "USER_ENTERED",
-    // How the input data should be inserted.
-    insertDataOption: "INSERT_ROWS",
-    resource: { values }
-  });
-  return data;
-};
-
-const appendAllSearch = async (search = {}) => {
-  const sheets = google.sheets({ version: "v4" });
-  const id = "=INDIRECT(ADDRESS(ROW()-1,COLUMN())) + 1";
-  const values = [
-    [
-      id,
-      ensureData(search.text),
-      ensureData(search.date),
-      ensureData(search.ref)
-    ]
-  ];
-
-  const { data } = await sheets.spreadsheets.values.append({
-    // The ID of the spreadsheet to update.
-    spreadsheetId: config.sheet.search,
-    // Values will be appended after the last row of the table.
-    range: "A:K",
-    // How the input data should be interpreted.
-    valueInputOption: "USER_ENTERED",
-    // How the input data should be inserted.
-    insertDataOption: "INSERT_ROWS",
-    resource: { values }
-  });
   return data;
 };
 
