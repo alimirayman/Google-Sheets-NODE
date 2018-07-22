@@ -1,0 +1,21 @@
+{
+  "name": "gsheets-rest-server",
+  "version": "1.0.0",
+  "description": "Restful server to handle request for requesting get and post request to google sheets",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "Mir Ayman ALi <alimirayman@outlook.com>",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "googleapis": "^32.0.0",
+    "helmet": "^3.12.1",
+    "lodash": "^4.17.10",
+    "morgan": "^1.9.0"
+  }
+}

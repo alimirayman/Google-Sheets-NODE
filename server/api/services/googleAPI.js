@@ -14,7 +14,7 @@ const getjwt = (userEmail = "") => {
   );
 };
 
-async function main(userEmail = "grossd@modalai.co") {
+async function main(userEmail = config.user.email) {
   const jwt = getjwt(userEmail);
   await jwt.authorize();
   google.options({ auth: jwt });

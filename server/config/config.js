@@ -13,6 +13,10 @@ var config = {
   },
   sheet: {
     id: process.env.SHEET_ID || "1lG56JjfVQsp1-2TL64XK8eZik4hI4KOQeQbasEfLzd0"
+  },
+  user: {
+    email:
+      process.env.USER_ID
   }
 };
 
